@@ -1,0 +1,95 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python sentiment/src/data/data_ingestion.py
+    deps:
+    - path: sentiment/src/data/data_ingestion.py
+      hash: md5
+      md5: 8c23724266e0ac57155df67f0b750f04
+      size: 3317
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: fb326d2eec197669f9638afde28356bf.dir
+      size: 827973
+      nfiles: 2
+  preprocessing:
+    cmd: python sentiment/src/features/preprocessing.py
+    deps:
+    - path: ./data/raw
+      hash: md5
+      md5: fb326d2eec197669f9638afde28356bf.dir
+      size: 827973
+      nfiles: 2
+    - path: sentiment/src/features/preprocessing.py
+      hash: md5
+      md5: 889fe7ebabb9303385d92755629d023b
+      size: 5360
+    outs:
+    - path: ./data/interim
+      hash: md5
+      md5: ef37afd17951ea8af23114b28d26f784.dir
+      size: 566210
+      nfiles: 2
+  feature_engineering:
+    cmd: python sentiment/src/features/feature_engineering.py
+    deps:
+    - path: ./data/interim
+      hash: md5
+      md5: ef37afd17951ea8af23114b28d26f784.dir
+      size: 566210
+      nfiles: 2
+    - path: sentiment/src/features/feature_engineering.py
+      hash: md5
+      md5: 297f9b0bc31f6f613bee5fd5bdad3862
+      size: 4319
+    params:
+      params.yaml:
+        feature_engineering.max_features: 250
+    outs:
+    - path: ./data/processed
+      hash: md5
+      md5: e38cc05745791fe24fdb93619841db9e.dir
+      size: 5219916
+      nfiles: 2
+  model_building:
+    cmd: python sentiment/src/model/model_building.py
+    deps:
+    - path: ./data/processed
+      hash: md5
+      md5: e38cc05745791fe24fdb93619841db9e.dir
+      size: 5219916
+      nfiles: 2
+    - path: sentiment/src/model/model_building.py
+      hash: md5
+      md5: 6abcea5ef9d33df25529090666d981a5
+      size: 3905
+    params:
+      params.yaml:
+        model_building.learning_rate: 0.1
+        model_building.max_depth: 6
+        model_building.n_estimators: 50
+    outs:
+    - path: sentiment/models/model.pkl
+      hash: md5
+      md5: bb05722ab8512d781a252e163fd3e6bb
+      size: 121015
+  model_evaluation:
+    cmd: python sentiment/src/model/model_evaluation.py
+    deps:
+    - path: sentiment/models/model.pkl
+      hash: md5
+      md5: bb05722ab8512d781a252e163fd3e6bb
+      size: 121015
+    - path: sentiment/src/model/model_evaluation.py
+      hash: md5
+      md5: 3215bf9953ffb18f1be4d3c689be0b36
+      size: 4302
+    outs:
+    - path: sentiment/reports/metrics.json
+      hash: md5
+      md5: e8b09db12bbe4d2772aec6222e3b67ee
+      size: 145
