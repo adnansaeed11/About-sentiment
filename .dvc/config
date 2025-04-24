@@ -1,4 +1,6 @@
 [core]
-    remote = myremote
+    remote = my_new_remote
 ['remote "myremote"']
     url = C:\Users\saeed\AppData\Local\Temp
+['remote "my_new_remote"']
+    url = C:\Users\saeed\AppData\Local\Temp\temp0
