@@ -44,24 +44,24 @@ stages:
       nfiles: 2
     - path: sentiment/src/features/feature_engineering.py
       hash: md5
-      md5: 297f9b0bc31f6f613bee5fd5bdad3862
-      size: 4319
+      md5: 92fb7cc93309834fdbaf9b815b06091b
+      size: 4338
     params:
       params.yaml:
         feature_engineering.max_features: 250
     outs:
     - path: ./data/processed
       hash: md5
-      md5: e38cc05745791fe24fdb93619841db9e.dir
-      size: 5219916
+      md5: ecea38396a900e1f720348c5d55c8a59.dir
+      size: 11546657
       nfiles: 2
   model_building:
     cmd: python sentiment/src/model/model_building.py
     deps:
     - path: ./data/processed
       hash: md5
-      md5: e38cc05745791fe24fdb93619841db9e.dir
-      size: 5219916
+      md5: ecea38396a900e1f720348c5d55c8a59.dir
+      size: 11546657
       nfiles: 2
     - path: sentiment/src/model/model_building.py
       hash: md5
@@ -75,15 +75,15 @@ stages:
     outs:
     - path: sentiment/models/model.pkl
       hash: md5
-      md5: bb05722ab8512d781a252e163fd3e6bb
-      size: 121015
+      md5: f3d1568b7d53e42f5cde2797b1ed4255
+      size: 120019
   model_evaluation:
     cmd: python sentiment/src/model/model_evaluation.py
     deps:
     - path: sentiment/models/model.pkl
       hash: md5
-      md5: bb05722ab8512d781a252e163fd3e6bb
-      size: 121015
+      md5: f3d1568b7d53e42f5cde2797b1ed4255
+      size: 120019
     - path: sentiment/src/model/model_evaluation.py
       hash: md5
       md5: 3215bf9953ffb18f1be4d3c689be0b36
@@ -91,5 +91,5 @@ stages:
     outs:
     - path: sentiment/reports/metrics.json
       hash: md5
-      md5: e8b09db12bbe4d2772aec6222e3b67ee
-      size: 145
+      md5: 173567d9540205ca1b8b164d8cd77b96
+      size: 142
