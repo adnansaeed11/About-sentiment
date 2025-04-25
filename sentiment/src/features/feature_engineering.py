@@ -2,7 +2,7 @@ import os
 import yaml
 import logging
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
 
 # -----------------------------------------------------------------------------
 
@@ -60,9 +60,9 @@ def data_spliting(train_data: pd.DataFrame, test_data: pd.DataFrame) -> pd.DataF
 
 # -----------------------------------------------------------------------------
 
-def bow_vertor(x_train: pd.DataFrame, x_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, max_feature: int) -> pd.DataFrame:
+def tfidf_vertor(x_train: pd.DataFrame, x_test: pd.DataFrame, y_train: pd.DataFrame, y_test: pd.DataFrame, max_feature: int) -> pd.DataFrame:
     try:
-        vectorizer = CountVectorizer(max_features=max_feature)
+        vectorizer = TfidfTransformer(max_features=max_feature)
 
         x_train_bow = vectorizer.fit_transform(x_train)
         x_test_bow = vectorizer.transform(x_test)
@@ -101,7 +101,7 @@ def main():
         x_train, x_test, y_train, y_test = data_spliting(train_data, test_data)
         
         max_feature = params['feature_engineering']['max_features']
-        x_train_bow, x_test_bow = bow_vertor(x_train, x_test, y_train, y_test, max_feature)
+        x_train_bow, x_test_bow = tfidf_vertor(x_train, x_test, y_train, y_test, max_feature)
 
         data_path = os.path.join("./data", "processed",)
         os.makedirs(data_path, exist_ok=True)
